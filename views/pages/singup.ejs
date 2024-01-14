@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Criar Conta</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .signup-container {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+      text-align: center;
+    }
+
+    .signup-container h2 {
+      color: #333;
+    }
+
+    .signup-form {
+      margin-top: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+    }
+
+    .form-group button {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .form-group button:hover {
+      background-color: #45a049;
+    }
+
+    .messages {
+      margin-bottom: 15px;
+      color: #f44336;
+    }
+
+    /* Estilos do botão de voltar */
+    .back-button {
+      background-color: transparent;
+      color: #999999;
+      padding: 8px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .back-button:hover {
+      background-color: #f0f0f0;
+    }
+    .back-button svg {
+      fill: #fff;
+      width: 20px;
+      height: 20px;
+      margin-right: 4px;
+
+    }
+
+  </style>
+</head>
+<body>
+  <div class="signup-container">
+    <!-- Botão de voltar -->
+    <a href="/login">
+      <button class="back-button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 20px; height: 20px;" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 12H6M12 5l-7 7 7 7"></path>
+      </svg>
+      </button>
+    </a>
+
+    <h2>Criar Conta</h2>
+    <form class="signup-form" action="/signup" method="POST">
+      <div class="form-group">
+        <label for="name">Nome:</label>
+        <input type="name" id="name" name="name" required <% if (value && typeof value.name !== 'undefined') { %>value="<%= value.name %>"<% } %>>
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required <% if (value && typeof value.email !== 'undefined') { %>value="<%= value.email %>"<% } %>>
+      </div>
+      <div class="form-group">
+        <label for="password">Senha:</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <div class="form-group">
+        <button type="submit">Criar Conta</button>
+      </div>
+      <div class="messages">
+        <% if (message) { %>
+            <%= message %>
+        <% } %>
+      </div>
+    </form>
+  </div>
+</body>
+</html>
