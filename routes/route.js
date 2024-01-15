@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
     // Verifica se o usuário existe e se a senha está correta
     if (!user || !(await bcrypt.compare(password, user.password))) {
         // Se o usuário não existir ou a senha estiver incorreta, renderiza a página de login com mensagem de erro
-        return res.render('login', { message: 'Email e/ou senha incorreta', value: email || '' });
+       return res.render('login', { message: { type: 'error', text: 'Email e/ou senha incorreta' }, value: email });
     }
 
     // Salva o usuário na sessão
@@ -83,8 +83,7 @@ router.post('/signup', async (req, res) => {
         await newUser.save();
 
         // Renderiza a página de login com uma mensagem indicando que o cadastro foi realizado com sucesso
-        res.render('login', {
-            message: 'Cadastro realizado com sucesso. Faça login para continuar.', value: email});
+        res.render('login', { message: { type: 'success', text: 'Cadastro realizado com sucesso. Faça login para continuar.'}, value: email} );
     } catch (error) {
         console.error(error);
         res.status(500).send('Erro interno do servidor');

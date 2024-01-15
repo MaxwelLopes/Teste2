@@ -61,9 +61,13 @@
     .form-group button:hover {
       background-color: #45a049;
     }
-    .messages {
-      margin-bottom: 15px;
-      color: #f44336;
+    
+    .success-message {
+        color: #4caf50; /* Cor verde para mensagens de sucesso */
+    }
+
+    .error-message {
+        color: #e3474f; /* Cor vermelha para mensagens de erro */
     }
     .signup-link {
       display: block;
@@ -94,9 +98,15 @@
         <input type="password" id="password" name="password" required>
       </div>
       <div class="messages">
-        <% if (message) { %>
-            <%= message %>
-        <% } %>
+        <!-- Se houver uma mensagem de sucesso -->
+          <% if (message && message.type === 'success') { %>
+            <p class="success-message"><%= message.text %></p>
+          <% } %>
+
+          <!-- Se houver uma mensagem de erro -->
+          <% if (message && message.type === 'error') { %>
+            <p class="error-message"><%= message.text %></p>
+          <% } %>
       </div>
       <div class="form-group">
         <button type="submit">Entrar</button>
