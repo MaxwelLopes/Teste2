@@ -11,7 +11,8 @@ router.get('/', async (req, res) => {
         // Busca o usuário no banco de dados usando o e-mail armazenado na sessão
         const user = await User.findOne({ where: { email: req.session.user.email } });
 
-        const posts = await Post.findAll();
+        const postsAll = await Post.findAll();
+        const posts = postsAll.reverse();
 
         // Renderiza a página 'index' com os detalhes do usuário
         res.render('index', { user, posts });
