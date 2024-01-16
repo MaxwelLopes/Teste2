@@ -23,7 +23,7 @@ router.get('/', async (req, res) => {
 });
 
 // Rota para processar o formulário de login
-router.post('/', async (req, res) => {
+router.post('/login', async (req, res) => {
     // Obtém o e-mail e senha do corpo da requisição
     const email = req.body.email;
     const password = req.body.password;
@@ -34,7 +34,7 @@ router.post('/', async (req, res) => {
     // Verifica se o usuário existe e se a senha está correta
     if (!user || !(await bcrypt.compare(password, user.password))) {
         // Se o usuário não existir ou a senha estiver incorreta, renderiza a página de login com mensagem de erro
-       return res.render('login', { message: { type: 'error', text: 'Email e/ou senha incorreta' }, value: email });
+        return res.render('login', { message: { type: 'error', text: 'Email e/ou senha incorreta' }, value: email });
     }
 
     // Salva o usuário na sessão
@@ -44,9 +44,18 @@ router.post('/', async (req, res) => {
     res.redirect('/');
 });
 
+// Rota para renderizar página de login
+router.get('/login', (req, res) => {
+    // Destrói a sessão
+    req.session.destroy();
+
+    res.render('login', { message: null, value: null });
+});
+
 // Rota para renderizar a página de cadastro
 router.get('/singup', (req, res) => {
     res.render('singup', { message: null, value: null });
+    
     // Destrói a sessão
     req.session.destroy();
 });
@@ -54,22 +63,29 @@ router.get('/singup', (req, res) => {
 // Rota para processar o formulário de cadastro
 router.post('/signup', async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password, confirmPassword } = req.body;
 
         // Verifica se o e-mail já está cadastrado
         const existingUser = await User.findOne({ where: { email: email } });
 
         if (existingUser) {
-            // Se o e-mail já estiver cadastrado, renderiza a página de cadastro com uma mensagem de erro
             let value = {
                 name: name,
                 email: email,
             };
-            // Destrói a sessão
+
+            // Destroi a sessão
             req.session.destroy();
+
+            // Se o e-mail já estiver cadastrado, renderiza a página de cadastro com uma mensagem de erro
             return res.render('singup', { message: 'Email já cadastrado.', value: value });
         }
+        // Verdica se as senham coincidem
+        if(password != confirmPassword){
+            return res.render('singup', { message: 'As senhas não coincidem.', value: value });
+        }
 
+        // Gera um hash seguro da senha usando a biblioteca bcrypt
         const hashedPassword = await bcrypt.hash(password, 10);
 
         // Cria um novo usuário
@@ -94,6 +110,7 @@ router.post('/signup', async (req, res) => {
 router.get('/logout', (req, res) => {
     // Destroi a sessão e redireciona para a página de login
     req.session.destroy();
+
     res.redirect('/login');
 });
 
@@ -123,7 +140,7 @@ router.post('/create-post', async (req, res) => {
 
         // Redireciona de volta para a página inicial após a criação do post
         res.redirect('/');
-    } catch (error) {
+    }catch (error) {
         console.error(error);
         res.status(500).send('Erro interno do servidor');
     }

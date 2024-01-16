@@ -67,7 +67,6 @@
       color: #f44336;
     }
 
-    /* Estilos do botão de voltar */
     .back-button {
       background-color: transparent;
       color: #999999;
@@ -96,6 +95,7 @@
 </head>
 <body>
   <div class="signup-container">
+
     <!-- Botão de voltar -->
     <a href="/login">
       <button class="back-button">
@@ -105,8 +105,9 @@
       </button>
     </a>
 
+    <!-- Formulário  -->
     <h2>Criar Conta</h2>
-    <form class="signup-form" action="/signup" method="POST">
+    <form class="signup-form" id="signupForm" action="/signup" method="POST" onsubmit="return validateForm()">
       <div class="form-group">
         <label for="name">Nome:</label>
         <input type="name" id="name" name="name" required <% if (value && typeof value.name !== 'undefined') { %>value="<%= value.name %>"<% } %>>
@@ -120,6 +121,11 @@
         <input type="password" id="password" name="password" required>
       </div>
       <div class="form-group">
+        <label for="confirmPassword">Confirmar Senha:</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required oninput="validatePassword()">
+        <span id="passwordError" style="color: #f44336;"></span>
+      </div>
+      <div class="form-group">
         <button type="submit">Criar Conta</button>
       </div>
       <div class="messages">
@@ -131,3 +137,31 @@
   </div>
 </body>
 </html>
+
+<script>
+  function validatePassword() {
+    var password = document.getElementById('password').value;
+    var confirmPassword = document.getElementById('confirmPassword').value;
+    var passwordError = document.getElementById('passwordError');
+
+    if (password !== confirmPassword) {
+      passwordError.innerHTML = 'As senhas não coincidem';
+    } else {
+      passwordError.innerHTML = ''; 
+    }
+  }
+
+  function validateForm() {
+    var password = document.getElementById('password').value;
+    var confirmPassword = document.getElementById('confirmPassword').value;
+    var passwordError = document.getElementById('passwordError');
+
+    if (password !== confirmPassword) {
+      passwordError.innerHTML = 'As senhas não coincidem';
+      return false;  
+    } else {
+      passwordError.innerHTML = '';
+      return true;   
+    }
+  }
+</script>
